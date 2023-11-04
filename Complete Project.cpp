@@ -1,13 +1,10 @@
-/**********************************************PREPROCESSORS**********************************************************/
-//Train Reservation System - BROUGHT TO YOU BY : code-projects.org
-//Working on basic structure
-//including all libraries for now
+
 #include<stdio.h>
 #include<conio.h>
 #include<stdlib.h>
 #include<string.h>
 
-/*******************************************GLOBAL VARIABLES**********************************************************/
+/**************GLOBAL VARIABLES*******************/
 //ALl the globle variables and the composite data types will be declared here
 typedef struct{
 	char name[50];
@@ -18,7 +15,7 @@ typedef struct{
 
 
 
-/*******************************************FUNCTION PROTOTYPE**********************************************************/
+/**************FUNCTION PROTOTYPE*******************/
 //function prototypes to be used
 void reservation(void);							//main reservation function
 void viewdetails(void);							//view details of all the trains
@@ -27,28 +24,23 @@ void printticket(char name[],int,int,float);	//print ticket
 void specifictrain(int);						//print data related to specific train
 float charge(int,int);							//charge automatically w.r.t number of seats and train
 void login();
+int showPassengers();
 
+/***************FUNCTION DECLARATION*******************/
 
-/******************************************FUNCTION DECLARATION**********************************************************/
-
-/*********************************************MAIN()*************************************************/
+/****************MAIN()****************/
 
 int main()
 
 {
 		system("cls"); 
-	printf("\t\t=================================================\n");
-	printf("\t\t|                                               |\n");
-	printf("\t\t|        -----------------------------          |\n");
-	printf("\t\t|           TRAIN TICKET RERS. SYSTEM           |\n");
-	printf("\t\t|        -----------------------------          |\n");
-	printf("\t\t|                                               |\n");
-	printf("\t\t|                                               |\n");
-	printf("\t\t|                                               |\n");
-	printf("\t\t|              BROUGHT TO YOU BY                |\n");
-	printf("\t\t|         |  SAWAI SINGH RAJPUROHIT  |          |\n");
-	printf("\t\t|                                               |\n");
-	printf("\t\t=================================================\n\n\n");
+	printf("\t\t======================================================\n");
+	printf("\t\t|                                                     |\n");
+	printf("\t\t|        -----------------------------------          |\n");
+	printf("\t\t|           TRAIN TICKET RESERVATION SYSTEM           |\n");
+	printf("\t\t|        -----------------------------------          |\n");
+	printf("\t\t|                                                     |\n");
+	printf("\t\t======================================================\n\n\n");
 		
 	    
 	printf(" \n Press any key to continue:");
@@ -68,7 +60,9 @@ int main()
 	printf("\n------------------------");
 	printf("\n3>> Cancel Reservation");
 	printf("\n------------------------");
-	printf("\n4>> Exit");
+	printf("\n4>> Show Passengers");
+	printf("\n------------------------");
+	printf("\n5>> Exit");
 	printf("\n------------------------");
 	printf("\n\n-->");
 	scanf("%d",&menu_choice);
@@ -84,9 +78,11 @@ int main()
 			break;
 		case 3:
 			cancel();
-			//function not added. code has been removed due to some errors
 			break;
 		case 4:
+			showPassengers();
+			break;
+		case 5:
 			return(0);
 		default:
 			printf("\nInvalid choice");
@@ -95,7 +91,7 @@ int main()
 	return(0);
 }
 
-/*********************************************VIEWDETAILS()*************************************************/
+/****************VIEWDETAILS()****************/
 
 //The function is yet not completed, need more details to be added!
 //timings of the trains are still missing 
@@ -119,7 +115,7 @@ void viewdetails(void)
     
 }
 
-/*********************************************RESERVATION()*************************************************/
+/****************RESERVATION()****************/
 
 void reservation(void)
 {
@@ -181,7 +177,7 @@ void reservation(void)
 	getch();
 }
 
-/*********************************************CHARGE()*************************************************/
+/****************CHARGE()****************/
 
 float charge(int train_num,int num_of_seats)
 {
@@ -228,7 +224,7 @@ float charge(int train_num,int num_of_seats)
 }
 
 
-/*********************************************PRINTTICKET()*************************************************/
+/****************PRINTTICKET()****************/
 
 void printticket(char name[],int num_of_seats,int train_num,float charges)
 {
@@ -243,7 +239,7 @@ void printticket(char name[],int num_of_seats,int train_num,float charges)
 	printf("\nCharges:\t\t%.2f",charges);
 }
 
-/*********************************************SPECIFICTRAIN()*************************************************/
+/****************SPECIFICTRAIN()****************/
 
 void specifictrain(int train_num)
 {
@@ -315,8 +311,8 @@ void login()
 	int a=0,i=0;
     char uname[10],c=' '; 
     char pword[10],code[10];
-    char user[10]="sawai";
-    char pass[10]="sanatani";
+    char user[10];
+    char pass[10];
     do
 {
 	
@@ -336,7 +332,7 @@ void login()
 	//char code=pword;
 	i=0;
 	//scanf("%s",&pword); 
-		if(strcmp(uname,"sawai")==0 && strcmp(pword,"sanatani")==0)
+		if(strcmp(uname,"admin")==0 && strcmp(pword,"admin")==0)
 	{
 	printf("  \n\n\n       WELCOME TO OUR SYSTEM !! YOUR LOGIN IS SUCCESSFUL");
 	printf("\n\n\n\t\t\t\tPress any key to continue...");
@@ -363,37 +359,82 @@ void login()
 		system("cls");	
 }
 
-void cancel(void)   
-{
-	/*FILE *f,*t;
-	int i=0;
-	int trainnum;
-	t=fopen("seats_reserved.txt","w");
-	if ((f=fopen("seats_reserved.txt","r"))==NULL)
-	{
-		printf("NO RECORD ADDED.");
-		main();
-		* * * * *
-		*
-		*
-		*
-		*
-		*
-		*
-		*  /  missing codes  /
-	}
-	else*/
-	system("cls");
-	int trainnum;
-	printf("-----------------------\n");
-		printf("Enter the train number: \n");
-			printf("-----------------------\n");
-		fflush(stdin);
-		scanf("%i",&trainnum);
-		printf("\n\nCancelled");  
-		getch();
+int showPassengers() 
+{ 
+	FILE *fptr;
+    char c; 
+    // Open file 
+    fptr = fopen("seats_reserved.txt", "r"); 
+    if (fptr == NULL) 
+    { 
+        printf("Cannot open file \n"); 
+        exit(0); 
+    } 
+    system("cls");
+	printf("-----------------------------------------------------------------------------\n");
+    printf("%s\t\t%s\t%s\t%s\n","Name:","No of Seats:","Train No:","Charges:");
+	printf("-----------------------------------------------------------------------------\n");
+    // Read contents from file 
+    c = fgetc(fptr); 
+    while (c != EOF) 
+    { 
+        printf ("%c", c); 
+        c = fgetc(fptr); 
+    } 
+	printf("\n\n\n\t\t\t\tPress any key to continue...");
+	getch();
+    fclose(fptr); 
+    return 0; 
 }
 
-
-              
-
+void cancel(void)   
+{
+	system("cls");
+	FILE *fp1, *fp2;
+    //consider 40 character string to store filename
+    char c;
+    int del_line, temp = 1;
+    //open file in read mode
+    printf("-----------------------------------------------------------------------------\n");
+    printf("%s\t\t%s\t%s\t%s\n","Name:","No of Seats:","Train No:","Charges:");
+	printf("-----------------------------------------------------------------------------\n");
+    fp1 = fopen("seats_reserved.txt", "r");
+    c = getc(fp1);
+    //until the last character of file is obtained
+    while (c != EOF)
+    {
+      printf("%c", c);
+      //print current character and read next character
+      c = getc(fp1);
+    }
+    //rewind
+    rewind(fp1);
+    printf(" \n\n\t\t Enter line number for passenger to be deleted:");
+    //accept number from user.
+    scanf("%d", &del_line);
+    //open new file in write mode
+    fp2 = fopen("copy.txt", "w+");
+    c = getc(fp1);
+    while (c != EOF) {
+      c = getc(fp1);
+      if (c==EOF)
+       break;
+      if (c == '\n')
+      	temp++;
+      //except the line to be deleted
+      if (temp != del_line)
+      {
+        //copy all lines in file copy.txt
+        putc(c, fp2);
+      }
+    }
+    //close both the files.
+    fclose(fp1);
+    fclose(fp2);
+    //remove original file
+    remove("seats_reserved.txt");
+    //rename the file copy.c to original name
+    rename("copy.txt","seats_reserved.txt");
+    printf("\n The contents of file after being modified are as follows:\n");
+    showPassengers();
+}
